@@ -1,10 +1,8 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
-    branches:
-      - main
-      - develop
+  pull_request:
 
 jobs:
   build-test:
@@ -12,37 +10,13 @@ jobs:
 
     steps:
       - name: Checkout código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
           java-version: '17'
+          distribution: 'temurin'
 
-      - name: Build
+      - name: Build e testes
         run: mvn clean install
-
-      - name: Rodar testes
-        run: mvn test
-
-      - name: Build Docker image
-        run: docker build -t greenflow .
-
-  deploy-staging:
-    needs: build-test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
-
-    steps:
-      - name: Deploy STAGING
-        run: echo "Aplicação enviada para STAGING 🚀"
-
-  deploy-production:
-    needs: build-test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Deploy PRODUÇÃO
-        run: echo "Aplicação enviada para PRODUÇÃO 🚀"
