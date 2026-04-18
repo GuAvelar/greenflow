@@ -8,4 +8,3 @@ public class GreenFlowApplication {
     public static void main(String[] args) {
         SpringApplication.run(GreenFlowApplication.class, args);
     }
-}
